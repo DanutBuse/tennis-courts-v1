@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@Api(value = "GuestController", description = "REST APIs related to Reservation Entity")
+@Api(value = "ReservationController", description = "REST APIs related to Reservation Entity")
 @RequestMapping(path = "/reservations")
 public class ReservationController extends BaseRestController {
 

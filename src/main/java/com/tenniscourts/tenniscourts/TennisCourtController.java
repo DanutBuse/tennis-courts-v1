@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@Api(value = "GuestController", description = "REST APIs related to Tennis Court Entity")
+@Api(value = "TennisCourtController", description = "REST APIs related to Tennis Court Entity")
 @RequestMapping(path = "/tennis-courts")
 public class TennisCourtController extends BaseRestController {
 

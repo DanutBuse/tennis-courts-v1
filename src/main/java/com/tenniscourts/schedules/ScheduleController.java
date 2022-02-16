@@ -25,7 +25,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@Api(value = "GuestController", description = "REST APIs related to Schedule Entity")
+@Api(value = "ScheduleController", description = "REST APIs related to Schedule Entity")
 @RequestMapping(path = "/schedules")
 public class ScheduleController extends BaseRestController {
 
