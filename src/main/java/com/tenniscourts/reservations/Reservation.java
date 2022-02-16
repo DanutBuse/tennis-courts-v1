@@ -9,29 +9,33 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 
 @Entity
 @Table
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Builder
+@SuperBuilder
 public class Reservation extends BaseEntity<Long> {
 
     @OneToOne
     private Guest guest;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @NotNull
     private Schedule schedule;
 
@@ -39,7 +43,22 @@ public class Reservation extends BaseEntity<Long> {
     private BigDecimal value;
 
     @NotNull
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
     private ReservationStatus reservationStatus = ReservationStatus.READY_TO_PLAY;
 
-    private BigDecimal refundValue;
+    @Builder.Default
+    private BigDecimal refundValue = BigDecimal.ZERO;
+
+    public Reservation cancelNotShowUpReservation() {
+        if (
+            reservationStatus.equals(ReservationStatus.READY_TO_PLAY)
+            && schedule.getEndDateTime().isBefore(LocalDateTime.now())
+        ) {
+            reservationStatus = ReservationStatus.NOT_SHOW_UP;
+            refundValue = BigDecimal.ZERO;
+        }
+
+        return this;
+    }
 }

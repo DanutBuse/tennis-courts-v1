@@ -51,6 +51,26 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         return new ResponseEntity<>(errorDetails, BAD_REQUEST);
     }
 
+    @ExceptionHandler(CancelInactiveReservation.class)
+    public final ResponseEntity<ErrorDetails> handleCancelInactiveReservationException(
+        IllegalArgumentException ex,
+        WebRequest request
+    ) {
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
+            request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CancelPastReservationException.class)
+    public final ResponseEntity<ErrorDetails> handleCancelpastReservationException(
+        IllegalArgumentException ex,
+        WebRequest request
+    ) {
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
+            request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, BAD_REQUEST);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(
             MissingServletRequestParameterException ex, HttpHeaders headers,

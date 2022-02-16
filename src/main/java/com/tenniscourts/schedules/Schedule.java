@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,10 +25,10 @@ import java.util.List;
 @Table
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = "reservations")
+@SuperBuilder
 public class Schedule extends BaseEntity<Long> {
 
     @ManyToOne
@@ -42,8 +43,9 @@ public class Schedule extends BaseEntity<Long> {
     @NotNull
     private LocalDateTime endDateTime;
 
-    @OneToMany
-    private List<Reservation> reservations;
+    @OneToMany(mappedBy = "schedule")
+    @Builder.Default
+    private List<Reservation> reservations = new ArrayList<>();
 
     public void addReservation(Reservation reservation) {
         if (this.reservations == null) {
